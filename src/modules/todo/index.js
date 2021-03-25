@@ -4,9 +4,7 @@ import Form from "./Form";
 import { Button } from "antd";
 import PropTypes from 'prop-types';
 
-TodoApp.propTypes = {
-
-};
+TodoApp.propTypes = {};
 
 function TodoApp(props) {
     const [list, setList] = useState([]);
