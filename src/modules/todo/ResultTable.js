@@ -1,10 +1,8 @@
 import React from 'react';
-import { Table } from 'antd';
-import PropTypes from 'prop-types';
-
-ResultTable.propTypes = {};
+import { Table, Button, } from 'antd';
 
 function ResultTable(props) {
+    const { onEdit, onDelete, } = props;
 
     const columns = [
         {
@@ -21,6 +19,20 @@ function ResultTable(props) {
             title: 'Address',
             dataIndex: 'address',
             key: 'address',
+        },
+        {
+            title: 'CN',
+            key: 'operation',
+            fixed: 'right',
+            width: 200,
+            render: (text, row, index) => <div>
+                <Button type="primary" onClick={() => onEdit(row)}>
+                    Edit
+                </Button>
+                <Button type="primary" danger onClick={() => onDelete(row)}>
+                    Delete
+                </Button>
+            </div>,
         },
     ];
 

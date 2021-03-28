@@ -2,21 +2,30 @@ import React, { useState } from 'react';
 import ResultTable from "./ResultTable";
 import Form from "./Form";
 import { Button } from "antd";
-import PropTypes from 'prop-types';
-
-TodoApp.propTypes = {};
 
 function TodoApp(props) {
     const [list, setList] = useState([]);
     const [showForm, setShowForm] = useState(false);
+    const [dataEdit, setDataEdit] = useState({});
 
     function onCloseForm() {
         setShowForm(false);
+        setDataEdit({});
     }
 
     function onSave(model) {
         setList([...list, model]);
         onCloseForm();
+    }
+
+    function onDelete(data) {
+        let res = list.filter(i => i.name !== data.name);
+        setList(res);
+    }
+
+    function onEdit(data) {
+        setShowForm(true);
+        setDataEdit(data)
     }
 
     return (
@@ -30,9 +39,16 @@ function TodoApp(props) {
             </Button>
             <ResultTable
                 dataSource={list}
+                onEdit={onEdit}
+                onDelete={onDelete}
             />
             {
-                showForm && <Form show={showForm} close={onCloseForm} onSave={onSave} />
+                showForm && <Form
+                    show={showForm}
+                    close={onCloseForm}
+                    onSave={onSave}
+                    dataEdit={dataEdit}
+                />
             }
         </div>
     );

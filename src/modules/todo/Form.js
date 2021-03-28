@@ -1,20 +1,18 @@
 import React from 'react';
 import { Modal, } from 'antd';
 import { useForm, } from "react-hook-form";
-import PropTypes from 'prop-types';
-
-Form.propTypes = {};
 
 function Form(props) {
+    const { show, close, dataEdit = {} } = props;
+    console.log(dataEdit, "data edit");
 
-    const { register, errors, handleSubmit } = useForm();
+    const { register, errors, handleSubmit } = useForm({
+        defaultValues: dataEdit ? dataEdit : {}
+    });
     const onSubmit = values => {
-        console.log(values);
         if (!values) return;
         props.onSave(values);
     }
-
-    const { show, close } = props;
 
     return (
         <Modal
