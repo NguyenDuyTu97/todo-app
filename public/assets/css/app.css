@@ -1,0 +1,11 @@
+body{
+    height: auto;
+}
+.container .header .title{
+    font-size: 18px;
+    color:blue;
+}
+
+.container .header .row .content{
+    margin: 0 auto;
+}
