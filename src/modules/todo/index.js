@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ResultTable from "./ResultTable";
 import Form from "./Form";
 import DeleteModal from "../../common/modal/DeleteModal";
+import { success, error } from "../../common/modal/NotificationModal";
 import { Button } from "antd";
 
 function TodoApp(props) {
@@ -11,6 +12,9 @@ function TodoApp(props) {
     const [dataDelete, setDataDelete] = useState({});
     const [isModalVisible, setIsModalVisible] = useState(false);
 
+    useEffect(() => {
+        localStorage.setItem("listAccount", JSON.stringify(list));
+    }, [list]);
 
     function onCloseForm() {
         setShowForm(false);
@@ -18,18 +22,19 @@ function TodoApp(props) {
     }
 
     function onSave(model) {
-        let listUpdate = [];
-        let idxItem = list.findIndex(l => l.uid === model.uid);
+        if (!model) return;
+
+        let newList = [...list];
+        let idxItem = newList.findIndex(l => l.uid === model.uid);
         if (idxItem > -1) {
-            list[idxItem] = model;
-            listUpdate = list;
+            newList[idxItem] = model;
         }
         else {
-            listUpdate = [...list, model];
+            newList.push(model);
         }
-        setList(listUpdate);
-        localStorage.setItem("listAccount", JSON.stringify(listUpdate));
+        setList(newList);
         onCloseForm();
+        success("The data has been saved successfully.");
     }
 
     function onCloseDeleteModal() {
@@ -42,10 +47,11 @@ function TodoApp(props) {
     }
 
     function onDelete() {
-        let res = list.filter(i => i.name !== dataDelete.name);
+        let newList = [...list];
+        let res = newList.filter(i => i.uid !== dataDelete.uid);
         setList(res);
         setIsModalVisible(false);
-        localStorage.setItem("listAccount", JSON.stringify(res));
+        success("The data has been deleted successfully.")
     }
 
     function onEdit(data) {
@@ -59,7 +65,7 @@ function TodoApp(props) {
                 <h3 className="title text-center mt-2">TODO APP</h3>
             </div>
             <div className="row justify-content-center">
-                <div className="content col-8">
+                <div className="content col-10">
                     <div className="row justify-content-end">
                         <div className="col-12">
                             <Button

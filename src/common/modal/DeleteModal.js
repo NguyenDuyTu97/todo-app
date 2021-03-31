@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button } from 'antd';
+import { Modal, } from 'antd';
 
 export default function DeleteModal(props) {
     const { handleOk, handleCancel, isModalVisible } = props;

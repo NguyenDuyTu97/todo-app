@@ -35,7 +35,7 @@ function Form(props) {
                                 <label htmlFor="address" className="col-3">Uid:</label>
                                 <input
                                     name="uid"
-                                    placeholder="Address"
+                                    placeholder="Uid"
                                     ref={register}
                                     className="col-9"
                                     disabled={true}
