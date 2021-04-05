@@ -1,8 +1,11 @@
 import React from 'react';
-import { Table, Button, } from 'antd';
+import { Table, Button, Tooltip, } from 'antd';
+import { EditOutlined, DeleteOutlined, } from '@ant-design/icons';
 
 function ResultTable(props) {
-    const { onEdit, onShowDeleteModal, } = props;
+    const {
+        onEdit, onShowDeleteModal, dataSource = [], listSearch = [],
+    } = props;
 
     const columns = [
         {
@@ -26,26 +29,28 @@ function ResultTable(props) {
             key: 'address',
         },
         {
-            title: 'CN',
-            key: 'operation',
-            fixed: 'right',
+            title: 'Action',
+            key: 'action',
             width: 200,
             render: (text, row, index) => <div>
-                <Button type="primary" onClick={() => onEdit(row)}>
-                    Edit
-                </Button>
-                <Button type="primary" danger onClick={() => onShowDeleteModal(row)}>
-                    Delete
-                </Button>
+                <Tooltip placement="top" title={"Edit"}>
+                    <Button type="primary" onClick={() => onEdit(row)}>
+                        <EditOutlined />
+                    </Button>
+                </Tooltip>
+                <Tooltip placement="top" title={"Delete"}>
+                    <Button type="primary" danger onClick={() => onShowDeleteModal(row)}>
+                        <DeleteOutlined />
+                    </Button>
+                </Tooltip>
             </div>,
         },
     ];
 
-    const { dataSource = [] } = props;
     return (
         <div>
             <Table
-                dataSource={dataSource}
+                dataSource={listSearch.length > 0 ? listSearch : dataSource}
                 columns={columns}
             />
         </div>

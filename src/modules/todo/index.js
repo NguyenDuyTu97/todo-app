@@ -3,13 +3,19 @@ import ResultTable from "./ResultTable";
 import Form from "./Form";
 import DeleteModal from "../../common/modal/DeleteModal";
 import { success, error } from "../../common/modal/NotificationModal";
-import { Button } from "antd";
+import { Button, Input, } from "antd";
+import { PlusCircleOutlined, } from '@ant-design/icons';
+
+const { Search } = Input;
 
 function TodoApp(props) {
     const [list, setList] = useState(() => localStorage.getItem('listAccount') ? JSON.parse(localStorage.getItem('listAccount')) : []);
-    const [showForm, setShowForm] = useState(false);
+    const [listSearch, setListSearch] = useState([]);
+
     const [dataEdit, setDataEdit] = useState({});
     const [dataDelete, setDataDelete] = useState({});
+
+    const [showForm, setShowForm] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
@@ -59,6 +65,12 @@ function TodoApp(props) {
         setDataEdit(data)
     }
 
+    function onSearch(valueSearch) {
+        let newList = [...list];
+        let res = newList.filter(i => i.name.toLowerCase().includes(valueSearch.toLowerCase()));
+        setListSearch(res);
+    }
+
     return (
         <div className="container">
             <div className="header">
@@ -66,12 +78,18 @@ function TodoApp(props) {
             </div>
             <div className="row justify-content-center">
                 <div className="content col-10">
-                    <div className="row justify-content-end">
-                        <div className="col-12">
+                    <div className="row mb-2">
+                        <div className='col-10'>
+                            <Search placeholder="search name" onSearch={onSearch} enterButton />
+                        </div>
+
+                        <div className="col-2">
                             <Button
                                 type="primary"
+                                block
                                 onClick={() => setShowForm(true)}
                             >
+                                <PlusCircleOutlined />
                                 Add
                             </Button>
                         </div>
@@ -80,6 +98,7 @@ function TodoApp(props) {
                         <div className="col-12">
                             <ResultTable
                                 dataSource={list}
+                                listSearch={listSearch}
                                 onEdit={onEdit}
                                 onShowDeleteModal={onShowDeleteModal}
                             />
